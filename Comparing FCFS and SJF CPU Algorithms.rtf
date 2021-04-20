@@ -1,0 +1,226 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red0\green0\blue0;\red70\green137\blue204;
+\red202\green202\blue202;\red194\green126\blue101;\red212\green212\blue212;\red167\green197\blue152;\red79\green123\blue61;
+}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\csgray\c0\c0;\cssrgb\c33725\c61176\c83922;
+\cssrgb\c83137\c83137\c83137;\cssrgb\c80784\c56863\c47059;\cssrgb\c86275\c86275\c86275;\cssrgb\c70980\c80784\c65882;\cssrgb\c37647\c54510\c30588;
+}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0\fs28 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec4 #include\strokec5  \strokec4 <\strokec6 iostream\strokec4 >\strokec5 \
+\strokec4 #include\strokec5  \strokec4 <\strokec6 stdlib.h\strokec4 >\strokec5 \
+\strokec4 using\strokec5  \strokec4 namespace\strokec5  std\strokec7 ;\strokec5 \
+\
+\strokec4 int\strokec5  fillArray\strokec7 (\strokec4 int\strokec5  mod\strokec7 ,\strokec5  \strokec4 int\strokec5  condition\strokec7 );\strokec5 \
+\strokec4 void\strokec5  printJobs\strokec7 (\strokec4 int\strokec5  jobs\strokec7 [\strokec8 2\strokec7 ][\strokec8 10\strokec7 ]);\strokec5 \
+\strokec4 int\strokec5  executeFCFS\strokec7 (\strokec4 int\strokec5  jobs\strokec7 [\strokec8 2\strokec7 ][\strokec8 10\strokec7 ],\strokec5  \strokec4 int\strokec5  milSecs\strokec7 );\strokec5 \
+\strokec4 int\strokec5  executSJF\strokec7 (\strokec4 int\strokec5  jobs\strokec7 [\strokec8 2\strokec7 ][\strokec8 10\strokec7 ],\strokec5  \strokec4 int\strokec5  milSecs \strokec7 );\strokec5 \
+\strokec4 void\strokec5  selectionSort\strokec7 (\strokec4 int\strokec5  sect\strokec7 ,\strokec5  \strokec4 int\strokec5  jobs\strokec7 [\strokec8 2\strokec7 ][\strokec8 10\strokec7 ]);\strokec5 \
+\
+\strokec4 int\strokec5  main\strokec7 ()\strokec5  \strokec7 \{\strokec5 \
+\
+   \strokec4 int\strokec5  jobs\strokec7 [\strokec8 2\strokec7 ][\strokec8 10\strokec7 ];\strokec5   \strokec9 //holds the arrival time of the job in the [0]\strokec5 \
+                     \strokec9 //holds the burst time in the [1]\strokec5 \
+   \strokec4 int\strokec5  userMilSec\strokec7 ;\strokec5    \strokec9 //how long the CPU has to complete jobs\strokec5 \
+   \strokec4 int\strokec5  fcfsJobs \strokec7 =\strokec5  \strokec8 0\strokec7 ;\strokec5 \
+   \strokec4 int\strokec5  sjfJobs \strokec7 =\strokec5  \strokec8 0\strokec7 ;\strokec5 \
+   \
+   \
+   \strokec9 //create 10 random jobs.\strokec5 \
+   \
+   \strokec9 //fill the arrival time array. There is no condition, or required mod\strokec5 \
+   \strokec4 for\strokec7 (\strokec4 int\strokec5  i \strokec7 =\strokec5  \strokec8 0\strokec7 ;\strokec5  i \strokec7 <\strokec5  \strokec8 10\strokec7 ;\strokec5  i\strokec7 ++)\{\strokec5 \
+       jobs \strokec7 [\strokec8 0\strokec7 ][\strokec5 i\strokec7 ]\strokec5  \strokec7 =\strokec5  fillArray\strokec7 (\strokec8 10\strokec7 ,\strokec5  \strokec8 0\strokec7 );\strokec5 \
+   \strokec7 \}\strokec5 \
+   \
+   \strokec9 //fill the burst time array. The burst length must be between 2 and 42ms\strokec5 \
+   \strokec4 for\strokec7 (\strokec4 int\strokec5  j \strokec7 =\strokec5  \strokec8 0\strokec7 ;\strokec5  j \strokec7 <\strokec5  \strokec8 10\strokec7 ;\strokec5  j\strokec7 ++)\{\strokec5 \
+       jobs \strokec7 [\strokec8 1\strokec7 ][\strokec5 j\strokec7 ]\strokec5  \strokec7 =\strokec5  fillArray\strokec7 (\strokec8 41\strokec7 ,\strokec5  \strokec8 2\strokec7 );\strokec5 \
+   \strokec7 \}\strokec5 \
+   \
+   \strokec9 //ask user how many milliseconds the CPU has to complete jobs\strokec5 \
+   cout \strokec7 <<\strokec5  \strokec6 "How many miliseconds does the CPU have to complete its jobs?"\strokec7 ;\strokec5 \
+   cin \strokec7 >>\strokec5  userMilSec\strokec7 ;\strokec5 \
+   \
+   cout \strokec7 <<\strokec5  \strokec6 "\\n\\t The CPU only has "\strokec5  \strokec7 <<\strokec5  userMilSec \strokec7 <<\strokec5  \strokec6 " milliseconds to do ten jobs."\strokec7 ;\strokec5 \
+   \
+   cout \strokec7 <<\strokec5  \strokec6 "\\n\\nHere are ten random jobs for the CPU to track. \\n"\strokec7 ;\strokec5 \
+   printJobs\strokec7 (\strokec5 jobs\strokec7 );\strokec5 \
+   \
+   \strokec9 //execute FCFS\strokec5 \
+   fcfsJobs \strokec7 =\strokec5  executeFCFS \strokec7 (\strokec5 jobs\strokec7 ,\strokec5  userMilSec \strokec7 );\strokec5 \
+   \
+   \strokec9 //execute SJF\strokec5 \
+   sjfJobs \strokec7 =\strokec5  executSJF \strokec7 (\strokec5 jobs\strokec7 ,\strokec5  userMilSec \strokec7 );\strokec5 \
+   \
+   \
+   \strokec9 //put out the results\strokec5 \
+   cout \strokec7 <<\strokec5  \strokec6 "\\n   The FCFS algorithm completed "\strokec5  \strokec7 <<\strokec5  fcfsJobs \strokec7 <<\strokec5  \strokec6 " job(s)\\n"\strokec5 \
+        \strokec7 <<\strokec5  \strokec6 "\\n   The SJF algorithm completed "\strokec5  \strokec7 <<\strokec5  sjfJobs \strokec7 <<\strokec5  \strokec6 " job(s)\\n"\strokec7 ;\strokec5 \
+\
+    \strokec4 return\strokec5  \strokec8 0\strokec7 ;\strokec5 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 \strokec7 \}\strokec5 \
+\
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 \strokec9 //return a random number.\strokec5 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 \strokec4 int\strokec5  fillArray\strokec7 (\strokec4 int\strokec5  mod\strokec7 ,\strokec5  \strokec4 int\strokec5  condition\strokec7 )\{\strokec5 \
+    \strokec4 int\strokec5  num\strokec7 ;\strokec5 \
+    \
+    num \strokec7 =\strokec5  rand\strokec7 ()\strokec5  \strokec7 %\strokec5  mod \strokec7 +\strokec5  condition\strokec7 ;\strokec5 \
+    \
+    \strokec4 return\strokec5  num\strokec7 ;\strokec5 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 \strokec7 \}\strokec5 \
+\
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 \strokec9 //print out the jobs array. \strokec5 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 \strokec4 void\strokec5  printJobs\strokec7 (\strokec4 int\strokec5  jobs\strokec7 [\strokec8 2\strokec7 ][\strokec8 10\strokec7 ])\{\strokec5 \
+\
+    cout \strokec7 <<\strokec5  \strokec6 "\\n\\t\\t\\t\\t\\t                   JOBS\\n"\strokec5 \
+         \strokec7 <<\strokec5  \strokec6 "\\nJob\\t     "\strokec7 ;\strokec5 \
+         \
+    \strokec4 for\strokec7 (\strokec4 int\strokec5  k \strokec7 =\strokec5  \strokec8 1\strokec7 ;\strokec5  k \strokec7 <\strokec5   \strokec8 11\strokec7 ;\strokec5  k\strokec7 ++)\{\strokec5 \
+        cout \strokec7 <<\strokec5  \strokec6 " "\strokec5  \strokec7 <<\strokec5  k \strokec7 <<\strokec5  \strokec6 " "\strokec7 ;\strokec5 \
+    \strokec7 \}\strokec5 \
+    \
+    cout \strokec7 <<\strokec5  \strokec6 "\\n\\nArrival\\t "\strokec7 ;\strokec5 \
+    \
+    \strokec4 for\strokec7 (\strokec4 int\strokec5  l \strokec7 =\strokec5  \strokec8 0\strokec7 ;\strokec5  l \strokec7 <\strokec5  \strokec8 10\strokec7 ;\strokec5  l\strokec7 ++\strokec5  \strokec7 )\{\strokec5 \
+        cout \strokec7 <<\strokec5  \strokec6 " "\strokec5  \strokec7 <<\strokec5  jobs\strokec7 [\strokec8 0\strokec7 ][\strokec5 l\strokec7 ]\strokec5  \strokec7 <<\strokec5  \strokec6 " "\strokec7 ;\strokec5 \
+    \strokec7 \}\strokec5 \
+    \
+    cout \strokec7 <<\strokec5  \strokec6 "\\n\\nBurst\\t  "\strokec7 ;\strokec5 \
+    \
+    \strokec4 for\strokec5  \strokec7 (\strokec4 int\strokec5  m \strokec7 =\strokec5  \strokec8 0\strokec7 ;\strokec5  m \strokec7 <\strokec5  \strokec8 10\strokec7 ;\strokec5  m\strokec7 ++)\{\strokec5 \
+        cout \strokec7 <<\strokec5  \strokec6 " "\strokec5  \strokec7 <<\strokec5  jobs\strokec7 [\strokec8 1\strokec7 ][\strokec5 m\strokec7 ]\strokec5  \strokec7 <<\strokec5  \strokec6 " "\strokec7 ;\strokec5 \
+    \strokec7 \}\strokec5 \
+    \
+    cout \strokec7 <<\strokec5  \strokec6 "\\n"\strokec7 ;\strokec5 \
+    \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 \strokec7 \}\strokec5 \
+\
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 \strokec4 int\strokec5  executeFCFS\strokec7 (\strokec4 int\strokec5  jobs\strokec7 [\strokec8 2\strokec7 ][\strokec8 10\strokec7 ],\strokec5  \strokec4 int\strokec5  milSecs\strokec7 )\{\strokec5 \
+\
+   \strokec4 int\strokec5  completedJobs \strokec7 =\strokec5  \strokec8 0\strokec7 ;\strokec5 \
+   \strokec4 int\strokec5  count \strokec7 =\strokec5  \strokec8 0\strokec7 ;\strokec5  \
+\
+   \strokec9 //A FCFS looks at the arrival time of a list of jobs and executes the first job in\strokec5 \
+   \strokec9 //a list and contiues on in a sequential order\strokec5 \
+   \
+   \
+   \strokec9 //The focus here is not an efficent sorting algorithm and there are only 10 elements \strokec5 \
+   \strokec9 //here so I am going to use a selection sort.\strokec5 \
+   selectionSort\strokec7 (\strokec8 0\strokec7 ,\strokec5  jobs\strokec7 );\strokec5 \
+   selectionSort\strokec7 (\strokec8 0\strokec7 ,\strokec5  jobs\strokec7 );\strokec5 \
+   \
+   cout \strokec7 <<\strokec5  \strokec6 "\\n\\nHere is the job array sorted by arrival time."\strokec7 ;\strokec5 \
+   printJobs \strokec7 (\strokec5 jobs \strokec7 );\strokec5 \
+   \
+   \strokec9 //Now that the array is sorted it's time for some math!. \strokec5 \
+   \
+   \strokec9 //subtract for the first job.\strokec5 \
+   milSecs \strokec7 =\strokec5  \strokec7 (\strokec5 milSecs \strokec7 -\strokec5  jobs\strokec7 [\strokec8 1\strokec7 ][\strokec5 count\strokec7 ]);\strokec5 \
+   \
+   \strokec9 //I will keep subtracting the burst time from the user enterd milsecods\strokec5 \
+   \strokec9 //as long as that number isn't below 0, a job is considered completed.\strokec5 \
+   \strokec4 while\strokec7 (\strokec5 milSecs \strokec7 >\strokec5  \strokec8 0\strokec7 )\{\strokec5 \
+       completedJobs\strokec7 ++;\strokec5 \
+       count\strokec7 ++;\strokec5 \
+       milSecs \strokec7 =\strokec5  \strokec7 (\strokec5 milSecs \strokec7 -\strokec5  jobs\strokec7 [\strokec8 1\strokec7 ][\strokec5 count\strokec7 ]);\strokec5 \
+   \strokec7 \}\strokec5 \
+\
+   \strokec4 return\strokec5  completedJobs\strokec7 ;\strokec5  \
+\
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 \strokec7 \}\strokec5 \
+\
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 \strokec4 int\strokec5  executSJF\strokec7 (\strokec4 int\strokec5  jobs\strokec7 [\strokec8 2\strokec7 ][\strokec8 10\strokec7 ],\strokec5  \strokec4 int\strokec5  milSecs \strokec7 )\{\strokec5 \
+   \
+   \strokec4 int\strokec5  completedJobs \strokec7 =\strokec5  \strokec8 0\strokec7 ;\strokec5 \
+   \strokec4 int\strokec5  count \strokec7 =\strokec5  \strokec8 0\strokec7 ;\strokec5  \
+\
+   \strokec9 //A SJF looks at the shortest burst time of a list of jobs and executes the first job in\strokec5 \
+   \strokec9 //a list and contiues on in a sequential order\strokec5 \
+   \
+   \
+   \strokec9 //The focus here is not an efficent sorting algorithm and there are only 10 elements \strokec5 \
+   \strokec9 //here so I am going to use a selection sort.\strokec5 \
+   selectionSort\strokec7 (\strokec8 1\strokec7 ,\strokec5  jobs\strokec7 );\strokec5 \
+   selectionSort\strokec7 (\strokec8 1\strokec7 ,\strokec5  jobs\strokec7 );\strokec5 \
+   \
+   cout \strokec7 <<\strokec5  \strokec6 "\\n\\nHere is the job array sorted by burst time."\strokec7 ;\strokec5 \
+   printJobs \strokec7 (\strokec5 jobs \strokec7 );\strokec5 \
+   \
+   \strokec9 //Now that the array is sorted it's time for some math!. \strokec5 \
+   \
+   \strokec9 //subtract for the first job.\strokec5 \
+   milSecs \strokec7 =\strokec5  \strokec7 (\strokec5 milSecs \strokec7 -\strokec5  jobs\strokec7 [\strokec8 1\strokec7 ][\strokec5 count\strokec7 ]);\strokec5 \
+   \
+   \strokec9 //I will keep subtracting the burst time from the user enterd milsecods\strokec5 \
+   \strokec9 //as long as that number isn't below 0, a job is considered completed.\strokec5 \
+   \strokec4 while\strokec7 (\strokec5 milSecs \strokec7 >\strokec5  \strokec8 0\strokec7 )\{\strokec5 \
+       completedJobs\strokec7 ++;\strokec5 \
+       count\strokec7 ++;\strokec5 \
+       milSecs \strokec7 =\strokec5  \strokec7 (\strokec5 milSecs \strokec7 -\strokec5  jobs\strokec7 [\strokec8 1\strokec7 ][\strokec5 count\strokec7 ]);\strokec5 \
+   \strokec7 \}\strokec5 \
+\
+   \strokec4 return\strokec5  completedJobs\strokec7 ;\strokec5  \
+\
+    \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 \strokec7 \}\strokec5 \
+\
+\
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 \strokec9 //I have to include which section I am working on for the selection sort.\strokec5 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 \strokec4 void\strokec5  selectionSort\strokec7 (\strokec4 int\strokec5  sect\strokec7 ,\strokec5  \strokec4 int\strokec5  jobs\strokec7 [\strokec8 2\strokec7 ][\strokec8 10\strokec7 ])\{\strokec5 \
+    \strokec4 int\strokec5  arvTemp\strokec7 ;\strokec5  \strokec9 //arival temp\strokec5 \
+    \strokec4 int\strokec5  burstTemp\strokec7 ;\strokec5  \strokec9 //burst temp\strokec5 \
+    \strokec4 int\strokec5  min\strokec7 ;\strokec5 \
+    \
+    \strokec4 for\strokec7 (\strokec4 int\strokec5  n \strokec7 =\strokec5  \strokec8 0\strokec7 ;\strokec5  n \strokec7 <\strokec5  \strokec8 9\strokec7 ;\strokec5  n\strokec7 ++)\{\strokec5 \
+        min \strokec7 =\strokec5  n\strokec7 ;\strokec5 \
+        \
+        \strokec4 for\strokec7 (\strokec4 int\strokec5  p \strokec7 =\strokec5  n\strokec7 +\strokec8 1\strokec7 ;\strokec5  p \strokec7 <\strokec5  \strokec8 10\strokec7 ;\strokec5  p\strokec7 ++)\{\strokec5 \
+            \strokec4 if\strokec7 (\strokec5 jobs\strokec7 [\strokec5 sect\strokec7 ][\strokec5 p\strokec7 ]\strokec5  \strokec7 <\strokec5  jobs\strokec7 [\strokec5 sect\strokec7 ][\strokec5 min\strokec7 ])\{\strokec5 \
+                min \strokec7 =\strokec5  p\strokec7 ;\strokec5  \
+                \
+                \strokec9 //swap the elements by arrival\strokec5 \
+                arvTemp  \strokec7 =\strokec5  jobs\strokec7 [\strokec8 0\strokec7 ][\strokec5 min\strokec7 ];\strokec5  \
+                jobs\strokec7 [\strokec8 0\strokec7 ][\strokec5 min\strokec7 ]\strokec5  \strokec7 =\strokec5  jobs\strokec7 [\strokec8 0\strokec7 ][\strokec5 n\strokec7 ];\strokec5 \
+                jobs\strokec7 [\strokec8 0\strokec7 ][\strokec5 n\strokec7 ]\strokec5  \strokec7 =\strokec5  arvTemp\strokec7 ;\strokec5  \
+                \
+                \strokec9 //swap the elements by bursttemp\strokec5 \
+                burstTemp  \strokec7 =\strokec5  jobs\strokec7 [\strokec8 1\strokec7 ][\strokec5 min\strokec7 ];\strokec5  \
+                jobs\strokec7 [\strokec8 1\strokec7 ][\strokec5 min\strokec7 ]\strokec5  \strokec7 =\strokec5  jobs\strokec7 [\strokec8 1\strokec7 ][\strokec5 n\strokec7 ];\strokec5 \
+                jobs\strokec7 [\strokec8 1\strokec7 ][\strokec5 n\strokec7 ]\strokec5  \strokec7 =\strokec5  burstTemp\strokec7 ;\strokec5  \
+                \
+            \strokec7 \}\strokec5 \
+         \strokec7 \}\strokec5 \
+    \strokec7 \}\strokec5 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 \strokec7 \}\strokec5 \
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+}
